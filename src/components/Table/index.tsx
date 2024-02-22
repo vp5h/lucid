@@ -7,13 +7,11 @@ const Table = ({
   isPending,
   error,
   columns,
-  tableStyle,
 }: {
   data: unknown;
   isPending: boolean;
   error: Error | null;
   columns: object[];
-  tableStyles: unknown;
 }) => {
   return (
     <div>
@@ -34,7 +32,9 @@ const Table = ({
           dataSource={data}
           columns={columns}
           pagination={false}
-          style={tableStyle}
+          style={{
+            background: "rgb(22 23 24)", // Set your desired background color
+          }}
           scroll={{ x: "calc(100vw - 100px)" }}
           rowKey="name"
         />

@@ -7,7 +7,7 @@ import "./index.css";
 import Modal from "../../components/Modal";
 
 const DashBoard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState({});
   const [tableData, setTableData] = useState([]);
   const queryClient = useQueryClient();
@@ -122,14 +122,17 @@ const DashBoard = () => {
         return (
           <>
             <Pencil
-              className={role === "1" ? "icons" : "disabled-icons"}
-              color={role === "1" ? "white" : "grey"}
+              className={
+                role === "1" && data.isEnabled ? "icons" : "disabled-icons"
+              }
+              color={role === "1" && data.isEnabled ? "green" : "grey"}
               size={"15px"}
               onClick={() => {
-                if (role === "1") {
+                if (role === "1" && data.isEnabled) {
                   console.log(text, data);
+                  setSelectedRow(data);
+                  setIsModalOpen(true);
                 }
-                // setSelectedRow();
               }}
             />
             {data?.isEnabled ? (
@@ -169,8 +172,6 @@ const DashBoard = () => {
                       });
                     });
                   }
-
-                  // setSelectedRow();
                 }}
               />
             )}
@@ -178,18 +179,20 @@ const DashBoard = () => {
               className={role === "1" ? "icons" : "disabled-icons"}
               color={role === "1" ? "red" : "grey"}
               size={"15px"}
+              onClick={() => {
+                if (role === "1") {
+                  queryClient.setQueryData(["STOCK"], (lastdata: any[]) =>
+                    lastdata.filter((each) => each.name !== data.name)
+                  );
+                }
+              }}
             />
           </>
         );
       },
     },
   ];
-  const tableStyle = {
-    background: "rgb(22 23 24)", // Set your desired background color
-    row: {
-      background: "rgb(22 23 24)",
-    },
-  };
+
   return (
     <div>
       <Navbar />
@@ -201,9 +204,12 @@ const DashBoard = () => {
         isPending={isPending}
         error={error}
         columns={columns}
-        tableStyles={tableStyle}
       />
-      <Modal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+      <Modal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        selectedRow={selectedRow}
+      />
     </div>
   );
 };

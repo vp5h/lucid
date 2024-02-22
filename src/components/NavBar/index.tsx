@@ -5,8 +5,6 @@ import { LogOut } from "lucide-react";
 
 const Navbar = () => {
   const onChange = (checked: boolean) => {
-    console.log(`switch to ${checked}`);
-
     queryClient.setQueryData(["ROLE"], () => {
       return checked ? "2" : "1";
     });
