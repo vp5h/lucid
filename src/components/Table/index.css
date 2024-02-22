@@ -1,0 +1,42 @@
+.table-lucid {
+  background-color: rgb(22 23 24) !important;
+}
+
+.tableHeading {
+  color: rgb(184 202 93);
+  background-color: rgb(22 23 24) !important;
+  padding: 9px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+}
+
+.ant-table-content {
+  background-color: rgb(33 33 36) !important;
+}
+
+.ant-table-cell {
+  color: white;
+}
+.ant-table-cell::before {
+  display: none;
+}
+
+.ant-table-cell-row-hover {
+  background-color: transparent !important;
+  opacity: 80%;
+}
+
+tr,
+th {
+  border-bottom: 0.2px rgb(179, 179, 179);
+}
+
+.icons {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.disabled-icons {
+  padding: 5px;
+  cursor: no-drop;
+}
