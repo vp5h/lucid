@@ -1,14 +1,14 @@
 import { Table as AntTable, ConfigProvider } from "antd";
 
 import "./index.css";
+import { StockInterface } from "../../interface";
 
 const Table = ({
   data,
   isPending,
-  error,
   columns,
 }: {
-  data: unknown;
+  data: StockInterface[];
   isPending: boolean;
   error: Error | null;
   columns: object[];
@@ -28,7 +28,7 @@ const Table = ({
       >
         <AntTable
           rootClassName="table-lucid"
-          //   loading={isPending}
+          loading={isPending}
           dataSource={data}
           columns={columns}
           pagination={false}

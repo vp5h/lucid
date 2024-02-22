@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.css";
 import { DollarSign, ShieldX, ShoppingCart, Tags } from "lucide-react";
+import { StockInterface } from "../../interface";
 
-export const Stats = ({ tableData = [] }) => {
-  const [aggregatedData, setAggregatedData] = useState({
+interface AggregatedData {
+  totalProducts: number;
+  totalStoreValue: number;
+  outOfStockCount: number;
+  categories: string[];
+  uniqueCategoriesCount: number;
+}
+
+export const Stats = ({ tableData = [] }: { tableData: StockInterface[] }) => {
+  const [aggregatedData, setAggregatedData] = useState<AggregatedData>({
     totalProducts: 0,
     totalStoreValue: 0,
     outOfStockCount: 0,
@@ -12,28 +21,28 @@ export const Stats = ({ tableData = [] }) => {
   });
 
   useEffect(() => {
-    console.log(tableData);
-    const result = tableData.reduce(
-      (acc, product) => {
+    // console.log(tableData);
+    const result = tableData.reduce<AggregatedData>(
+      (acc, product: StockInterface) => {
         // Exclude products that are not enabled
         if (!product.isEnabled) {
           return acc;
         }
 
         // Total products aggregation of all quantities
-        acc.totalProducts += product.quantity;
+        acc.totalProducts += parseInt(product.quantity);
 
         // Total store value aggregation of values
         acc.totalStoreValue += parseFloat(product.value.replace("$", ""));
 
         // Out of stocks count
-        if (product.quantity === 0) {
+        if (parseInt(product.quantity) === 0) {
           acc.outOfStockCount++;
         }
 
         // Total categories count
-        if (!acc.categories.includes(product.category)) {
-          acc.categories.push(product.category);
+        if (!acc.categories.includes(product.category as string)) {
+          acc.categories.push(product.category as string);
         }
         acc.uniqueCategoriesCount = acc.categories.length;
 
@@ -50,7 +59,7 @@ export const Stats = ({ tableData = [] }) => {
     setAggregatedData(result);
   }, [tableData]);
 
-  const renderIcon = (key: string) => {
+  const renderIcon = (key: keyof AggregatedData) => {
     switch (key) {
       case "totalProducts":
         return <ShoppingCart size={30} />;
@@ -62,7 +71,7 @@ export const Stats = ({ tableData = [] }) => {
         return <Tags size={30} />;
     }
   };
-  const renderText = (key: string) => {
+  const renderText = (key: keyof AggregatedData) => {
     switch (key) {
       case "totalProducts":
         return "Total products";
@@ -77,19 +86,21 @@ export const Stats = ({ tableData = [] }) => {
 
   return (
     <div className="info">
-      {Object.keys(aggregatedData).map((each) => {
+      {Object.entries(aggregatedData).map(([each, value]) => {
         if (each !== "categories") {
-          //   return;
           return (
             <div key={each} className="eachInfo">
-              <div>{renderIcon(each)}</div>
+              <div>{renderIcon(each as keyof AggregatedData)}</div>
               <div className="textInfo">
-                <div className="statName">{renderText(each)}</div>
-                <div className="statValue">{aggregatedData?.[each] || 0}</div>
+                <div className="statName">
+                  {renderText(each as keyof AggregatedData)}
+                </div>
+                <div className="statValue">{value || 0}</div>
               </div>
             </div>
           );
         }
+        return null;
       })}
     </div>
   );

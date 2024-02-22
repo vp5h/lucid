@@ -36,7 +36,7 @@ const Modal = ({
     let calculatedValue = formData?.value?.split("$")?.[1] || 0;
     let valueFromInput = value;
     if (name === "quantity" && value > 0) {
-      console.log(formData?.price);
+      //   console.log(formData?.price);
       valueFromInput = parseInt(valueFromInput);
       calculatedValue =
         parseInt(value) * parseInt(formData?.price?.split("$")?.[1] || "0");

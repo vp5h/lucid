@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import Navbar from "../../components/NavBar";
 import Table from "../../components/Table";
@@ -6,12 +6,19 @@ import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import "./index.css";
 import Modal from "../../components/Modal";
 import { Stats } from "../../components/Stats";
+import { StockInterface } from "../../interface";
 
 // TODO add types
 
 const DashBoard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState({});
+  const [selectedRow, setSelectedRow] = useState<StockInterface>({
+    name: "",
+    price: "",
+    category: "",
+    quantity: "",
+    value: "",
+  });
   const [tableData, setTableData] = useState([]);
   const queryClient = useQueryClient();
   const { data: role } = useQuery({
@@ -26,12 +33,15 @@ const DashBoard = () => {
       fetch("https://dev-0tf0hinghgjl39z.api.raw-labs.com/inventory")
         .then((res) => res.json())
         .then((resp) => {
-          return resp.map((each) => ({ ...each, isEnabled: true }));
+          return resp.map((each: StockInterface) => ({
+            ...each,
+            isEnabled: true,
+          }));
         }),
   });
   useEffect(() => {
     if (role === "2") {
-      setTableData(data?.filter((each) => each?.isEnabled));
+      setTableData(data?.filter((each: StockInterface) => each?.isEnabled));
     } else if (role === "1") {
       setTableData(data);
     }
@@ -79,7 +89,8 @@ const DashBoard = () => {
 
       dataIndex: "action",
       key: "action",
-      render: (text: string, data: object) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (_: any, data: StockInterface) => {
         return (
           <>
             <Pencil
@@ -90,7 +101,6 @@ const DashBoard = () => {
               size={"15px"}
               onClick={() => {
                 if (role === "1" && data.isEnabled) {
-                  console.log(text, data);
                   setSelectedRow(data);
                   setIsModalOpen(true);
                 }
@@ -103,15 +113,18 @@ const DashBoard = () => {
                 size={"15px"}
                 onClick={() => {
                   if (role === "1") {
-                    queryClient.setQueryData(["STOCK"], (lastdata: any[]) => {
-                      return lastdata.map((each: { name: any }) => {
-                        if (each.name === data.name) {
-                          return { ...each, isEnabled: false };
-                        } else {
-                          return each;
-                        }
-                      });
-                    });
+                    queryClient.setQueryData(
+                      ["STOCK"],
+                      (lastdata: StockInterface[]) => {
+                        return lastdata.map((each: { name: string }) => {
+                          if (each.name === data.name) {
+                            return { ...each, isEnabled: false };
+                          } else {
+                            return each;
+                          }
+                        });
+                      }
+                    );
                   }
                   // setSelectedRow();
                 }}
@@ -123,15 +136,18 @@ const DashBoard = () => {
                 size={"15px"}
                 onClick={() => {
                   if (role === "1") {
-                    queryClient.setQueryData(["STOCK"], (lastdata: any[]) => {
-                      return lastdata.map((each: { name: any }) => {
-                        if (each.name === data.name) {
-                          return { ...each, isEnabled: true };
-                        } else {
-                          return each;
-                        }
-                      });
-                    });
+                    queryClient.setQueryData(
+                      ["STOCK"],
+                      (lastdata: StockInterface[]) => {
+                        return lastdata.map((each: { name: string }) => {
+                          if (each.name === data.name) {
+                            return { ...each, isEnabled: true };
+                          } else {
+                            return each;
+                          }
+                        });
+                      }
+                    );
                   }
                 }}
               />
@@ -142,8 +158,10 @@ const DashBoard = () => {
               size={"15px"}
               onClick={() => {
                 if (role === "1") {
-                  queryClient.setQueryData(["STOCK"], (lastdata: any[]) =>
-                    lastdata.filter((each) => each.name !== data.name)
+                  queryClient.setQueryData(
+                    ["STOCK"],
+                    (lastdata: StockInterface[]) =>
+                      lastdata.filter((each) => each.name !== data.name)
                   );
                 }
               }}
