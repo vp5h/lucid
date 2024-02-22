@@ -5,6 +5,7 @@ import Table from "../../components/Table";
 import { Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
 import "./index.css";
 import Modal from "../../components/Modal";
+import { Stats } from "../../components/Stats";
 
 const DashBoard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -200,6 +201,7 @@ const DashBoard = () => {
       <div className="heading">
         <p>Inventory Stats</p>
       </div>
+      <Stats tableData={tableData} />
       <Table
         data={tableData}
         isPending={isPending}
