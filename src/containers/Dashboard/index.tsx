@@ -18,6 +18,7 @@ const DashBoard = () => {
 
   const { isPending, error, data } = useQuery({
     queryKey: ["STOCK"],
+    staleTime: Infinity,
     queryFn: () => {
       return [
         {

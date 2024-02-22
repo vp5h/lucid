@@ -35,7 +35,7 @@ const Table = ({
           style={{
             background: "rgb(22 23 24)", // Set your desired background color
           }}
-          scroll={{ x: "calc(100vw - 100px)" }}
+          scroll={{ x: "calc(90vw - 100px)" }}
           rowKey="name"
         />
       </ConfigProvider>
