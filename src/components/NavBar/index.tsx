@@ -1,7 +1,7 @@
 import "./index.css";
 import { Switch } from "antd";
 import { useQueryClient } from "@tanstack/react-query";
-import { LogOut } from "lucide-react";
+import { LogOut, RotateCcw } from "lucide-react";
 
 const Navbar = () => {
   const onChange = (checked: boolean) => {
@@ -14,6 +14,11 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="navbarContent">
+        <RotateCcw
+          onClick={() => {
+            queryClient.refetchQueries({ queryKey: ["STOCK"] });
+          }}
+        />
         admin
         <Switch
           defaultChecked={queryClient.getQueryData(["ROLE"]) === "2"}

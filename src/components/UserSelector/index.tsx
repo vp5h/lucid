@@ -19,7 +19,7 @@ const UserSelector = () => {
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
       </div>
-      <h1>DashBoard</h1>
+      <h1>Inventory Management</h1>
       <p>Please, Select one of the below roles</p>
       <div className="card">
         <button onClick={() => setRole("1")}>Admin</button>

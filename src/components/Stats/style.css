@@ -30,4 +30,5 @@
 .statValue {
   display: flex;
   font-size: 30px;
+  font-family: monospace, monospace;
 }
