@@ -4,14 +4,7 @@ import "./style.css";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-
-interface StockInterface {
-  name: string;
-  price: string;
-  category: string;
-  quantity: string;
-  value: string;
-}
+import { StockInterface } from "../../interface";
 
 const Modal = ({
   isModalOpen,
@@ -59,7 +52,6 @@ const Modal = ({
   };
 
   useEffect(() => {
-    // console.log(selectedRow, formData);
     setFormData(selectedRow);
   }, [selectedRow]);
   const formRef = useRef<HTMLFormElement | null>(null);
